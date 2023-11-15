@@ -77,6 +77,11 @@ def deleta_usuario(id):
         print('Erro', e)
         return gera_response(400, "usuario", {}, "Erro ao deletar")
 
+@app.route("/")
+def home():
+    return "Hello World, from Flask!"
+
+    return gera_response(200, "usuario", usuario_json)
 
 def gera_response(status, nome_do_conteudo, conteudo, mensagem=False):
     body = {}
@@ -87,5 +92,3 @@ def gera_response(status, nome_do_conteudo, conteudo, mensagem=False):
 
     return Response(json.dumps(body), status=status, mimetype="application/json")
 
-
-app.run(port=8000)
