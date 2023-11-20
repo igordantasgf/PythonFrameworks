@@ -1,6 +1,7 @@
 from flask import Flask, Response
 from flask_sqlalchemy import SQLAlchemy
 import json, os
+from flask_cors import cross_origin
 
 PASSWORD = os.environ.get('POSTGRES_PASSWORD')
 
@@ -28,6 +29,7 @@ def login():
 
 # Selecionar Tudo
 @app.route("/comentarios", methods=["GET"])
+@cross_origin()
 def seleciona_usuarios():
     mensagens_objetos = Comentarios.query.all()
     mensagens_json = [mensagem.to_json() for mensagem in mensagens_objetos]
