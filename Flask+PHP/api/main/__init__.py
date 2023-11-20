@@ -32,3 +32,6 @@ def seleciona_comentarios():
     comentarios_json = [comentario.to_json() for comentario in comentarios_objetos]
 
     return gera_response(200, "comentarios", comentarios_json)
+
+if __name__ == "__main__":
+    app.run(debug=True) 
