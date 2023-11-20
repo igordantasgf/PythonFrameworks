@@ -1,32 +1,9 @@
-<?php
-// Lógica para recuperar mensagens do banco de dados PostgreSQL (substitua esta lógica pela sua implementação real)
-
-// Exemplo de conexão com o banco de dados PostgreSQL
-$host = "seu_host";
-$port = "sua_porta";
-$dbname = "seu_banco_de_dados";
-$user = "seu_usuario";
-$password = "sua_senha";
-
-try {
-    $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$user;password=$password");
-} catch (PDOException $e) {
-    die("Erro na conexão com o banco de dados: " . $e->getMessage());
-}
-
-// Exemplo de consulta para obter mensagens
-$query = "SELECT * FROM mensagens";
-$statement = $pdo->prepare($query);
-$statement->execute();
-$mensagens = $statement->fetchAll(PDO::FETCH_ASSOC);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela 2 - Comentários</title>
+    <title>Display de Comentários</title>
     <style>
         body {
             display: flex;
@@ -35,13 +12,27 @@ $mensagens = $statement->fetchAll(PDO::FETCH_ASSOC);
             height: 100vh;
             margin: 0;
         }
+        #comments-container {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <div>
+    <div id="comments-container">
         <?php
-        foreach ($mensagens as $mensagem) {
-            echo "<p>{$mensagem['conteudo']}</p>";
+        
+        // Exemplo de requisição à API na rota "/comentarios"
+        $api_url = "http://sua_api.com/comentarios"; // Substitua pela URL real da sua API
+        $json_data = file_get_contents($api_url);
+        $api_data = json_decode($json_data, true);
+
+        // Exibindo os comentários
+        if ($api_data && isset($api_data['comentarios'])) {
+            foreach ($api_data['comentarios'] as $comment) {
+                echo "<p>{$comment}</p>";
+            }
+        } else {
+            echo "<p>Nenhum comentário disponível.</p>";
         }
         ?>
     </div>
