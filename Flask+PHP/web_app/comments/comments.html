@@ -18,23 +18,38 @@
     </style>
 </head>
 <body>
-    <div id="comments-container">
-        <?php
-        
-        // Exemplo de requisição à API na rota "/comentarios"
-        $api_url = "http://sua_api.com/comentarios"; // Substitua pela URL real da sua API
-        $json_data = file_get_contents($api_url);
-        $api_data = json_decode($json_data, true);
+    <div id="comments-container"></div>
 
-        // Exibindo os comentários
-        if ($api_data && isset($api_data['comentarios'])) {
-            foreach ($api_data['comentarios'] as $comment) {
-                echo "<p>{$comment}</p>";
-            }
-        } else {
-            echo "<p>Nenhum comentário disponível.</p>";
-        }
-        ?>
-    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Exemplo de requisição à API na rota "/comentarios"
+            const apiURL = "https://api-comments-site.vercel.app/comentarios"; // Substitua pela URL real da sua API
+            const commentsContainer = document.getElementById("comments-container");
+
+            // Fazer a requisição à API
+            fetch(apiURL)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.mensagens) {
+                        data.mensagens.forEach(message => {
+                            const paragraph = document.createElement("p");
+                            paragraph.textContent = message.mensagem;
+                            commentsContainer.appendChild(paragraph);
+                        });
+                    } else {
+                        const noCommentsParagraph = document.createElement("p");
+                        noCommentsParagraph.textContent = "Nenhuma mensagem disponível.";
+                        commentsContainer.appendChild(noCommentsParagraph);
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro na requisição à API:", error);
+                    const errorParagraph = document.createElement("p");
+                    errorParagraph.textContent = "Erro ao carregar os comentários.";
+                    commentsContainer.appendChild(errorParagraph);
+                });
+        });
+    </script>
 </body>
 </html>
+
