@@ -13,6 +13,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://default:{}@ep-autumn-dream
 db = SQLAlchemy(app)
 
 
+@app.route("/")
+def home():
+    return "Hello World, from Flask!"
+
+
 # Selecionar Tudo
 @app.route("/comentarios", methods=["GET"])
 def seleciona_comentarios():
