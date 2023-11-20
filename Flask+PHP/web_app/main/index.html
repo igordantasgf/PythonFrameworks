@@ -19,19 +19,39 @@
 </head>
 <body>
     <div>
-        <form action="submit_message.php" method="post">
-            <input type="text" id="message-input" name="message" maxlength="60" placeholder="Digite sua mensagem" required>
-            <button type="submit" onclick="sendMessage()">Submit</button>
+        <form id="messageForm">
+            <input type="text" id="message-input" placeholder="Digite sua mensagem" maxlength="60" required>
+            <button type="button" onclick="sendMessage()">Submit</button>
         </form>
         <button onclick="goToComments()">Comentários</button>
 
         <script>
             function sendMessage() {
-                alert("Mensagem enviada");
+                const messageInput = document.getElementById("message-input");
+                const message = messageInput.value;
+
+                // Exemplo de requisição à API para enviar a mensagem
+                fetch("https://api-comments-site.vercel.app/comentario", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ message }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert("Mensagem enviada");
+                    // Limpar o campo de mensagem após o envio
+                    messageInput.value = "";
+                })
+                .catch(error => {
+                    console.error("Erro ao enviar mensagem:", error.message);
+                    alert("Erro ao enviar mensagem");
+                });
             }
 
             function goToComments() {
-                window.location.href = "/comments/comments.html";
+                window.location.href = "comments.html";
             }
         </script>
     </div>

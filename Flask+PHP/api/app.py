@@ -1,4 +1,4 @@
-from flask import Flask, Response
+from flask import Flask, Response, request
 from flask_sqlalchemy import SQLAlchemy
 import json, os
 from flask_cors import cross_origin,CORS
@@ -41,6 +41,22 @@ def seleciona_usuarios():
     mensagens_json = [mensagem.to_json() for mensagem in mensagens_objetos]
 
     return gera_response(200, "mensagens", mensagens_json)
+
+
+ # Cadastrar
+@app.route("/comentario", methods=["POST"])
+@cross_origin()
+def cria_usuario():
+    body = request.get_json()
+
+    try:
+        msg = Comentarios(mensagem=body["mensagem"])
+        db.session.add(msg)
+        db.session.commit()
+        return gera_response(201, "mensagem", msg.to_json(), "Criado com sucesso")
+    except Exception as e:
+        print('Erro', e)
+        return gera_response(400, "mensagem", {}, "Erro ao enviar")
 
 
 # JSON Return
