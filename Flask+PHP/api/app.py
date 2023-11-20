@@ -1,13 +1,11 @@
 from flask import Flask, Response
 from flask_sqlalchemy import SQLAlchemy
-import os, json
-from response import gera_response
-
+import json, os
 
 PASSWORD = os.environ.get('POSTGRES_PASSWORD')
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://default:{}@ep-autumn-dream-20888543.us-east-1.postgres.vercel-storage.com:5432/verceldb'.format(PASSWORD)
 db = SQLAlchemy(app)
 
@@ -24,16 +22,20 @@ class Comentarios(db.Model):
 def home():
     return "Hello World, from Flask!"
 
+@app.route("/login")
+def login():
+    return "Login realizado"
 
 # Selecionar Tudo
 @app.route("/comentarios", methods=["GET"])
-def seleciona_comentarios():
-    comentarios_objetos = Comentarios.query.all()
-    comentarios_json = [comentario.to_json() for comentario in comentarios_objetos]
+def seleciona_usuarios():
+    mensagens_objetos = Comentarios.query.all()
+    mensagens_json = [mensagem.to_json() for mensagem in mensagens_objetos]
 
-    return gera_response(200, "comentarios", comentarios_json)
+    return gera_response(200, "mensagens", mensagens_json)
 
 
+# JSON Return
 def gera_response(status, nome_do_conteudo, conteudo, mensagem=False):
     body = {}
     body[nome_do_conteudo] = conteudo
@@ -42,7 +44,3 @@ def gera_response(status, nome_do_conteudo, conteudo, mensagem=False):
         body["mensagem"] = mensagem
 
     return Response(json.dumps(body), status=status, mimetype="application/json")
-
-
-if __name__ == "__main__":
-    app.run(debug=True) 
