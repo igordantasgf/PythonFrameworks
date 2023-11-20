@@ -28,6 +28,7 @@
 
             // Fazer a requisição à API
             fetch(apiURL)
+            
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.mensagens) {

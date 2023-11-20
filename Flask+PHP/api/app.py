@@ -9,7 +9,11 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://default:{}@ep-autumn-dream-20888543.us-east-1.postgres.vercel-storage.com:5432/verceldb'.format(PASSWORD)
 db = SQLAlchemy(app)
-cors = CORS(app)
+cors = CORS(app, resource={
+    r"/*":{
+        "origins":"*"
+    }
+})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 # models
