@@ -26,6 +26,14 @@ def home():
 def login():
     return "Login realizado"
 
+# Selecionar Tudo
+@app.route("/comentarios", methods=["GET"])
+def seleciona_usuarios():
+    mensagens_objetos = Comentarios.query.all()
+    mensagens_json = [mensagem.to_json() for mensagem in mensagens_objetos]
+
+    return gera_response(200, "mensagens", mensagens_json)
+
 
 # JSON Return
 def gera_response(status, nome_do_conteudo, conteudo, mensagem=False):
