@@ -36,7 +36,7 @@
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ message }),
+                    body: JSON.stringify({ mensagem: message }), // Ajuste na formatação do JSON
                 })
                 .then(response => response.json())
                 .then(data => {
