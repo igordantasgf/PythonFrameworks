@@ -1,0 +1,49 @@
+<?php
+// Lógica para recuperar mensagens do banco de dados PostgreSQL (substitua esta lógica pela sua implementação real)
+
+// Exemplo de conexão com o banco de dados PostgreSQL
+$host = "seu_host";
+$port = "sua_porta";
+$dbname = "seu_banco_de_dados";
+$user = "seu_usuario";
+$password = "sua_senha";
+
+try {
+    $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$user;password=$password");
+} catch (PDOException $e) {
+    die("Erro na conexão com o banco de dados: " . $e->getMessage());
+}
+
+// Exemplo de consulta para obter mensagens
+$query = "SELECT * FROM mensagens";
+$statement = $pdo->prepare($query);
+$statement->execute();
+$mensagens = $statement->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela 2 - Comentários</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <?php
+        foreach ($mensagens as $mensagem) {
+            echo "<p>{$mensagem['conteudo']}</p>";
+        }
+        ?>
+    </div>
+</body>
+</html>
